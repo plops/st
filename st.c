@@ -384,13 +384,13 @@ base64dec(const char *src)
 		if (a == -1 || b == -1)
 			break;
 
-		*dst++ = (a << 2) | ((b & 0x30) >> 4);
+		*dst++ = (char) ((a << 2) | ((b & 0x30) >> 4));
 		if (c == -1)
 			break;
-		*dst++ = ((b & 0x0f) << 4) | ((c & 0x3c) >> 2);
+		*dst++ = (char) (((b & 0x0f) << 4) | ((c & 0x3c) >> 2));
 		if (d == -1)
 			break;
-		*dst++ = ((c & 0x03) << 6) | d;
+		*dst++ = (char) (((c & 0x03) << 6) | d);
 	}
 	*dst = '\0';
 	return result;
@@ -818,9 +818,9 @@ size_t
 ttyread(void)
 {
 	static char buf[BUFSIZ];
-	static int buflen = 0;
-	int ret, written;
-
+	static size_t buflen = 0;
+	int written;
+    size_t ret;
 	/* append read bytes to unprocessed bytes */
 	ret = read(cmdfd, buf+buflen, LEN(buf)-buflen);
 

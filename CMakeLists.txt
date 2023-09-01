@@ -30,8 +30,8 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
             -g -g3 -ggdb -gdwarf-4
             -fsanitize=undefined
     )
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=undefined")
-    els()
+    add_link_options(-fsanitize=undefined)
+else ()
     add_compile_options(
             -Ofast
             -ffunction-sections -fdata-sections
