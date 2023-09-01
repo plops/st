@@ -2165,6 +2165,8 @@ tstrsequence(uchar c)
 	case 0x9d:   /* OSC -- Operating System Command */
 		c = ']';
 		break;
+        default:
+        break;
 	}
 	strreset();
 	strescseq.type = c;
@@ -2263,6 +2265,8 @@ tcontrolcode(uchar ascii)
 	case 0x9f:   /* APC -- Application Program Command */
 		tstrsequence(ascii);
 		return;
+        default:
+            break;
 	}
 	/* only CAN, SUB, \a and C1 chars interrupt a sequence */
 	term.esc &= ~(ESC_STR_END|ESC_STR);
@@ -2369,8 +2373,9 @@ tputc(Rune u)
 		width = len = 1;
 	} else {
 		len = utf8encode(u, c);
-		if (!control && (width = wcwidth(u)) == -1)
-			width = 1;
+        if(!control)
+		    if ((width = wcwidth(u)) == -1)
+                width = 1;
 	}
 
 	if (IS_SET(MODE_PRINT))
