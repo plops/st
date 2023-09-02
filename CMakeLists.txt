@@ -7,6 +7,11 @@ set(
         st.c
         x.c
 )
+option(ENABLE_ASAN "Enable AddressSanitizer" OFF)
+if (ENABLE_ASAN)
+    add_compile_options(-fsanitize=address)
+    add_link_options(-fsanitize=address)
+endif ()
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(fontconfig REQUIRED)
@@ -28,9 +33,7 @@ add_compile_options(
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_options(
             -g -g3 -ggdb -gdwarf-4
-            -fsanitize=undefined
     )
-    add_link_options(-fsanitize=undefined)
 else ()
     add_compile_options(
             -Ofast
